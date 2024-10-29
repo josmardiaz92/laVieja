@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar con g++",
+            "type": "shell",
+            "command": "C:\\MinGW\\bin\\g++.exe", // Ajusta la ruta a g++ si es necesario
+            "args": ["-g", "-I", "C:\\MinGW\\include", "${file}", "-o", "${fileDirname}/${fileBasenameNoExtension}"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
