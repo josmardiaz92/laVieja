@@ -1,12 +1,14 @@
 #include <iostream>
 #include <iomanip>
 #include <limits>
+#include <cstdlib>
 using namespace std;
 
 char tablero[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
 char jugadorActual = 'X';
 bool ganador = false;
 bool empate = false;
+string mensajeVolver="\nPresiona Enter para volver al menú principal.\n";
 
 // Función para limpiar la pantalla (puede variar según el sistema operativo)
 void limpiarPantalla() {
@@ -111,7 +113,7 @@ void creditos(){
     
     cout<<"\n\t\tGracias por jugar!\n";
     
-    cout<<"\nPresiona Enter para volver al menú principal.\n";
+    cout<<mensajeVolver;
 
     cin.ignore(); // Para limpiar el buffer de entrada
     cin.get(); // Esperar a que el usuario presione Enter
@@ -168,7 +170,7 @@ void pantallaPrincipal(){
         cout<<"\n\t 2. Instrucciones"<<endl;
         cout<<"\n\t 3. Creditos"<<endl;
         cout<<"\n\t 4. Salir"<<endl;
-        cout<<"\n\n Seleccione una opcion: ";
+        cout<<"\n\n Seleccione una opción: ";
         cin>>opcion;
 
         if(cin.fail() || opcion<=0 || opcion>4){
@@ -203,6 +205,7 @@ void pantallaPrincipal(){
 }
 
 int main() {
+    system("chcp 65001");
     pantallaPrincipal();
     return 0;
 }
