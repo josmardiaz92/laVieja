@@ -1,0 +1,12 @@
+/* ------------------ BODY ------------------ */
+.cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* ------------------ FOOTER ------------------ */
+#footer span{
+    font-size: x-small;
+}
