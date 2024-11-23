@@ -1,6 +1,6 @@
 class LaVieja {
     constructor() {
-        this.currentPlayer = 'X';
+        this.jugadorActual = 'X';
         this.tablero = ['', '', '', '', '', '', '', '', ''];
         this.juegoActivo = true;
         this.cells = document.querySelectorAll('.cell');
@@ -11,6 +11,10 @@ class LaVieja {
             ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!
         `;
         this.btnMenu=document.getElementById('btnMenu');
+        this.jugadores=[
+            {nombre:'Jugador 1',simbolo:'X'},
+            {nombre:'Jugador 2',simbolo:'O'},
+        ];
 
         this.dibujarMenu();
     }
@@ -62,8 +66,16 @@ class LaVieja {
 
     iniciarJuego(){
         this.quitarMenu();
+        this.restaurarJuego();
         this.contenedorTablero.classList.remove('d-none');
         this.btnMenu.classList.remove('d-none');
+
+        this.jugadores.forEach((jugador,index)=>{
+            jugador.nombre=prompt(`Introdusca el nombre del jugador ${index+1}`);
+            if(jugador.nombre===''){
+                jugador.nombre=`Jugador ${index+1}`;
+            }
+        })
 
         this.cells.forEach((cell) => {
             const ancho = cell.offsetWidth;
@@ -89,13 +101,13 @@ class LaVieja {
 
     tomarMovimiento(cell, index) {
         if (this.tablero[index] === '' && this.juegoActivo) {
-            this.tablero[index] = this.currentPlayer;
-            this.currentPlayer==='X' ? cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid p-4">`: cell.innerHTML=`<img src="img/o.png" alt="X" class="img-fluid p-4">`;
+            this.tablero[index] = this.jugadorActual;
+            this.jugadorActual==='X' ? cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid p-4">`: cell.innerHTML=`<img src="img/o.png" alt="X" class="img-fluid p-4">`;
             let ficha = cell.querySelector('img');
-            //ficha.innerText = this.currentPlayer;
+            //ficha.innerText = this.jugadorActual;
             ficha.classList.add('puff-in-center');
             this.verificarGanador();
-            this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+            this.jugadorActual = this.jugadorActual === 'X' ? 'O' : 'X';
         }
     }
 
@@ -134,7 +146,7 @@ class LaVieja {
 
     restaurarJuego() {
         this.tablero = ['', '', '', '', '', '', '', '', ''];
-        this.currentPlayer = 'X';
+        this.jugadorActual = 'X';
         this.juegoActivo = true;
         this.cells.forEach(cell => {
             cell.innerText = '';
@@ -156,12 +168,13 @@ class LaVieja {
                 </div>
             `;
         }else{
+            ganador==='X' ? ganador=this.jugadores[0].nombre : ganador=this.jugadores[1].nombre;
             resultado.innerHTML=`
                 <div class="col">
                     <img src="img/ganador.png" alt="GANADOR" class="img-fluid">
                 </div>
                 <div class="col">
-                    <h3>Jugador ${ganador}</h3>
+                    <h3>${ganador}</h3>
                 </div>
             `;
         }
