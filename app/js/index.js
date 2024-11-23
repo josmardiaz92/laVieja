@@ -61,14 +61,14 @@ class LaVieja {
                     }else{
                     }
                 })
-                alert(`¡El jugador ${this.tablero[a]} ha ganado!`);
+                this.mostrarGanador(this.tablero[a]);
                 this.juegoActivo = false;
                 return;
             }
         }
 
         if (!this.tablero.includes('')) {
-            alert('¡Es un empate!');
+            this.mostrarGanador("empate");
             this.juegoActivo = false;
         }
     }
@@ -78,9 +78,38 @@ class LaVieja {
         this.currentPlayer = 'X';
         this.juegoActivo = true;
         this.cells.forEach(cell => {
-            cell.innerText = '<span></span>';
+            cell.innerText = '';
             cell.classList.remove('colorGanador');
         });
+    }
+
+    mostrarGanador(ganador){
+        const modal=document.getElementById('mostrarGanador');
+        const instModal=new bootstrap.Modal(modal);
+        const resultado=modal.querySelector('.modal-body');
+        if(ganador==="empate"){
+            resultado.innerHTML=`
+                <div class="col">
+                    <img src="img/empate.png" alt="GANADOR" class="img-fluid">
+                </div>
+                <div class="col">
+                    <h3>¿ Revancha ?</h3>
+                </div>
+            `;
+        }else{
+            resultado.innerHTML=`
+                <div class="col">
+                    <img src="img/ganador.png" alt="GANADOR" class="img-fluid">
+                </div>
+                <div class="col">
+                    <h3>Jugador ${ganador}</h3>
+                </div>
+            `;
+        }
+
+        setTimeout(() => {
+            instModal.show();
+        }, 1000);
     }
 }
 

@@ -1,4 +1,4 @@
-body{
+body, .modal-content{
     background-color: black;
     color: #FFFF00;
 }
@@ -12,7 +12,7 @@ body{
     cursor: pointer;
 }
 
-.offcanvas{
+.transparente{
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
     background-color: rgba(0, 0, 0, 0.153);

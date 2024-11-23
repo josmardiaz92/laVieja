@@ -18,7 +18,7 @@
                 <i class="fa-solid fa-bars fa-2xl" style="color: #1919a6;" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu" aria-label="Toggle navigation"></i>
             </div>
         </div>
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="menu" aria-labelledby="menuLabel">
+        <div class="offcanvas offcanvas-end transparente" tabindex="-1" id="menu" aria-labelledby="menuLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="menuLabel">Menú</h5>
                 <i class="fa-solid fa-x fa-xl ms-auto" style="color: #ffff00;" data-bs-dismiss="offcanvas" aria-label="Close"></i>
@@ -54,6 +54,21 @@
                 <a href="https://es.textstudio.com/" target="_blank">Generador de fuentes</a>
             </span>
             <span class="ms-auto">Lowdevices.Dev's 2024</span>
+        </div>
+    </div>
+    <div class="contenedorModales">
+        <div class="modal fade transparente" id="mostrarGanador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mostrarGanadorLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content transparente">
+                    <div class="modal-body d-flex flex-column align-items-center">
+                        
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                    <button type="button" class="btn btn-primary" onclick="juego.restaurarJuego()" data-bs-dismiss="modal">Volver a Jugar</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
