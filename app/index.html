@@ -10,20 +10,18 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="mt-3 d-flex justify-content-between align-items-center position-relative" id="head">
-            <div class="col text-center">
-                <h1 class="m-0">La Vieja</h1>
+        <div class="mt-2 d-flex justify-content-center align-items-center position-relative" id="head">
+            <div class="col-4 d-flex justify-content-center">
+                <img src="img/nombre.png" alt="La Vieja" class="img-fluid">
             </div>
-            <div class="position-absolute top-0 end-0 me-2 mt-1">
-                <button class="" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu" aria-label="Toggle navigation">
-                    <i class="fa-solid fa-bars fa-xl p-1"></i>
-                </button>
+            <div class="position-absolute top-0 end-0 me-2 mt-4">
+                <i class="fa-solid fa-bars fa-2xl" style="color: #1919a6;" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu" aria-label="Toggle navigation"></i>
             </div>
         </div>
         <div class="offcanvas offcanvas-end" tabindex="-1" id="menu" aria-labelledby="menuLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="menuLabel">Menú</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <i class="fa-solid fa-x fa-xl ms-auto" style="color: #ffff00;" data-bs-dismiss="offcanvas" aria-label="Close"></i>
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -33,25 +31,28 @@
             </div>
         </div>
         <div class="" id="body">
-            <div class="mt-5" id="contenedorTablero">
+            <div class="mt-2" id="contenedorTablero">
                 <div class="row d-flex justify-content-center" id="linea1">
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 0)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 1)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 2)"></div>
+                    <div class="col-2 border-5 cell" id="0" onclick="juego.tomarMovimiento(this, 0)"></div>
+                    <div class="col-2 border-5 cell" id="1" onclick="juego.tomarMovimiento(this, 1)"></div>
+                    <div class="col-2 border-5 cell" id="2" onclick="juego.tomarMovimiento(this, 2)"></div>
                 </div>
                 <div class="row d-flex justify-content-center" id="linea2">
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 3)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 4)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 5)"></div>
+                    <div class="col-2 border-5 cell" id="3" onclick="juego.tomarMovimiento(this, 3)"></div>
+                    <div class="col-2 border-5 cell" id="4" onclick="juego.tomarMovimiento(this, 4)"></div>
+                    <div class="col-2 border-5 cell" id="5" onclick="juego.tomarMovimiento(this, 5)"></div>
                 </div>
                 <div class="row d-flex justify-content-center" id="linea3">
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 6)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 7)"></div>
-                    <div class="col-2 border-dark border-5 cell" onclick="makeMove(this, 8)"></div>
+                    <div class="col-2 border-5 cell" id="6" onclick="juego.tomarMovimiento(this, 6)"></div>
+                    <div class="col-2 border-5 cell" id="7" onclick="juego.tomarMovimiento(this, 7)"></div>
+                    <div class="col-2 border-5 cell" id="8" onclick="juego.tomarMovimiento(this, 8)"></div>
                 </div>
             </div>
         </div>
         <div class="d-flex mt-3 me-2" id="footer">
+            <span>
+                <a href="https://es.textstudio.com/" target="_blank">Generador de fuentes</a>
+            </span>
             <span class="ms-auto">Lowdevices.Dev's 2024</span>
         </div>
     </div>
