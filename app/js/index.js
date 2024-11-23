@@ -4,18 +4,77 @@ class LaVieja {
         this.tablero = ['', '', '', '', '', '', '', '', ''];
         this.juegoActivo = true;
         this.cells = document.querySelectorAll('.cell');
-        this.iniciar();
+        this.menu=document.getElementById('contenedorMenu');
+        this.contenedorTablero=document.getElementById('contenedorTablero');
+        this.titulo=document.getElementById('titulo');
+        this.instrucciones=`
+            ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!
+        `;
+        this.btnMenu=document.getElementById('btnMenu');
+
+        this.dibujarMenu();
     }
 
-    iniciar() {
-        document.addEventListener('DOMContentLoaded', () => {
-            this.cells.forEach((cell) => {
-                const ancho = cell.offsetWidth;
-                cell.style.height = ancho + "px";
-                cell.style.fontSize = ancho / 1.5 + "px";
-                this.dibujarBordes(cell);
-            });
+    dibujarMenu(){
+            this.quitarJuego();
+
+            this.titulo.classList.add('agrandar');
+            setTimeout(() => {
+                this.titulo.classList.remove('col-4', 'agrandar');
+                this.titulo.classList.add('col-8');
+            }, 500);
+
+            this.btnMenu.classList.add('d-none');
+
+            this.menu.innerHTML=`
+            <div class="row d-flex flex-column align-items-center mt-5">
+                <div class="col-6" onclick="juego.iniciarJuego()">
+                    <img src="img/nuevoJuego.png" alt="Nuevo Juego" class="img-fluid">
+                </div>
+                <div class="col-6" onclick="juego.mostrarInstrucciones()">
+                    <img src="img/Instrucciones.png" alt="Nuevo Juego" class="img-fluid">
+                </div>
+            </div>
+            `
+    }
+
+    quitarMenu(){
+        this.menu.innerHTML="";
+        this.titulo.classList.add('reducir');
+        setTimeout(() => {
+            this.titulo.classList.remove('col-8', 'reducir');
+            this.titulo.classList.add('col-4');
+        }, 500);
+    }
+
+    mostrarInstrucciones(){
+        this.menu.innerHTML=`
+        <div class="row d-flex justify-content-center">
+            <div class="col-8 text-center">
+                <h3>
+                    ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!"
+                </h3>
+                <i class="fa-solid fa-arrow-left fa-2xl mt-5" style="color: #ffff00;" onclick="juego.dibujarMenu()"></i>
+            </div>               
+        </div>
+        `
+    }
+
+    iniciarJuego(){
+        this.quitarMenu();
+        this.contenedorTablero.classList.remove('d-none');
+        this.btnMenu.classList.remove('d-none');
+
+        this.cells.forEach((cell) => {
+            const ancho = cell.offsetWidth;
+            cell.style.height = ancho + "px";
+            cell.style.fontSize = ancho / 1.5 + "px";
+            this.dibujarBordes(cell);
         });
+    }
+
+    quitarJuego(){
+        this.contenedorTablero.classList.add('d-none');
     }
 
     dibujarBordes(cell) {

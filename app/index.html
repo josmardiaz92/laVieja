@@ -11,10 +11,10 @@
 <body>
     <div class="container-fluid">
         <div class="mt-2 d-flex justify-content-center align-items-center position-relative" id="head">
-            <div class="col-4 d-flex justify-content-center">
+            <div class="col-8 d-flex justify-content-center" id="titulo">
                 <img src="img/nombre.png" alt="La Vieja" class="img-fluid">
             </div>
-            <div class="position-absolute top-0 end-0 me-2 mt-4">
+            <div class="position-absolute top-0 end-0 me-2 mt-4 d-none" id="btnMenu">
                 <i class="fa-solid fa-bars fa-2xl" style="color: #1919a6;" data-bs-toggle="offcanvas" data-bs-target="#menu" aria-controls="menu" aria-label="Toggle navigation"></i>
             </div>
         </div>
@@ -26,9 +26,15 @@
             <div class="offcanvas-body">
                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                    <span onclick="juego.dibujarMenu()" data-bs-dismiss="offcanvas" aria-label="Close">Inicio</span>
+                </li>
+                <li>
+                    <span onclick="juego.restaurarJuego()" data-bs-dismiss="offcanvas" aria-label="Close">Reiniciar Juego</span>
                 </li>
             </div>
+        </div>
+        <div id="contenedorMenu">
+            
         </div>
         <div class="" id="body">
             <div class="mt-2" id="contenedorTablero">
@@ -49,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex mt-3 me-2" id="footer">
+        <div class="d-flex px-3 fixed-bottom" id="footer">
             <span>
                 <a href="https://es.textstudio.com/" target="_blank">Generador de fuentes</a>
             </span>
@@ -64,7 +70,7 @@
                         
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salir</button>
+                    <button type="button" class="btn btn-secondary" onclick="juego.dibujarMenu()" data-bs-dismiss="modal">Salir</button>
                     <button type="button" class="btn btn-primary" onclick="juego.restaurarJuego()" data-bs-dismiss="modal">Volver a Jugar</button>
                     </div>
                 </div>
