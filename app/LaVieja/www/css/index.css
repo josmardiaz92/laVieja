@@ -11,7 +11,8 @@ body, .container-fluid{
 
 /* ------------------ BODY ------------------ */
 
-#contenedorMenu, #menuInstrucciones{
+#contenedorMenu, #menuInstrucciones, #contenedorDificultades{
+    width: 100%;
     position: absolute;
     top: 20%;
 }

@@ -10,16 +10,27 @@ class LaVieja {
             ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!
         `;
         this.btnMenu=document.getElementById('btnMenu');
-        this.jugadores=[
-            {nombre:'Jugador 1',simbolo:'X'},
-            {nombre:'Jugador 2',simbolo:'O'},
+        this.jugadores=[];
+        this.dificultadCPU='dificil';
+        this.consicionesGanadoras = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
         ];
-
         this.dibujarMenu();
     }
 
     dibujarMenu(){
-            this.titulo.classList.add('agrandar');
+        this.jugadores=[
+            {nombre:'Jugador 1',simbolo:'X'},
+            {nombre:'Jugador 2',simbolo:'O'},
+        ];
+        this.titulo.classList.add('agrandar');
             setTimeout(() => {
                 this.titulo.classList.remove('col-10', 'agrandar');
                 this.titulo.classList.add('col-12');
@@ -29,11 +40,14 @@ class LaVieja {
 
             this.contenedor.innerHTML=`
             <div class="row d-flex flex-column align-items-center mt-5" id="contenedorMenu">
-                <div class="col-8 mt-5" onclick="juego.dibujarTablero()">
-                    <img src="img/nuevoJuego.png" alt="Nuevo Juego" class="img-fluid">
+                <div class="col-5 mt-5" onclick="juego.dibujarTablero()">
+                    <img src="img/1-vs-1.png" alt="1-vs-1" class="img-fluid">
                 </div>
-                <div class="col-8" onclick="juego.mostrarInstrucciones()">
-                    <img src="img/Instrucciones.png" alt="Nuevo Juego" class="img-fluid">
+                <div class="col-6" onclick="juego.mostrarDificultades()">
+                    <img src="img/1-vs-CPU.png" alt="1-vs-CPU" class="img-fluid">
+                </div>
+                <div class="col-9 mt-5" onclick="juego.mostrarInstrucciones()">
+                    <img src="img/Instrucciones.png" alt="Instrucciones" class="img-fluid">
                 </div>
             </div>
             `
@@ -61,7 +75,6 @@ class LaVieja {
     }
 
     dibujarTablero(){
-        console.log('a')
         this.contenedor.innerHTML=`
             <div class="" id="contenedorTablero">
                 <div class="row d-flex justify-content-center" id="linea1">
@@ -99,10 +112,13 @@ class LaVieja {
 
     iniciarJuego(){
         this.quitarMenu();
+        this.restaurarJuego();
         this.btnMenu.classList.remove('d-none');
 
         this.jugadores.forEach((jugador,index)=>{
-            jugador.nombre=prompt(`Introdusca el nombre del jugador ${index+1}`);
+            if(jugador.nombre!=='CPU'){
+                jugador.nombre=prompt(`Introdusca el nombre del jugador ${index+1}`);
+            }
             if(jugador.nombre===''){
                 jugador.nombre=`Jugador ${index+1}`;
             }
@@ -125,22 +141,15 @@ class LaVieja {
             ficha.classList.add('puff-in-center');
             this.verificarGanador();
             this.jugadorActual = this.jugadorActual === 'X' ? 'O' : 'X';
+
+            if(this.jugadorActual==='O' && this.jugadores[1].nombre==='CPU'){
+                this.movimientoCPU();
+            }
         }
     }
 
     verificarGanador() {
-        const consicionesGanadoras = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
-
-        for (let condicion of consicionesGanadoras) {
+        for (let condicion of this.consicionesGanadoras) {
             const [a, b, c] = condicion;
             if (this.tablero[a] && this.tablero[a] === this.tablero[b] && this.tablero[a] === this.tablero[c]) {
                 this.cells.forEach(celda=>{
@@ -199,6 +208,123 @@ class LaVieja {
         setTimeout(() => {
             instModal.show();
         }, 1000);
+    }
+
+    mostrarDificultades(){
+        this.contenedor.innerHTML = `
+            <div class="row d-flex flex-column align-items-center mt-5 ms-0
+            " id="contenedorDificultades">
+                <div class="col-6 mt-3" onclick="juego.iniciarJuegoCPU('facil')">
+                    <img src="img/facil.png" alt="facil" class="img-fluid">
+                </div>
+                <div class="col-7 mt-3" onclick="juego.iniciarJuegoCPU('media')">
+                    <img src="img/medio.png" alt="medio" class="img-fluid">
+                </div>
+                <div class="ms-3 col-9 mt-3" onclick="juego.iniciarJuegoCPU('dificil')">
+                    <img src="img/dificil.png" alt="dificil" class="img-fluid">
+                </div>
+                <div class="col-8 mt-5 d-flex justify-content-center">
+                    <i class="fa-solid fa-arrow-left fa-2xl mt-5" style="color: #ffff00;" onclick="juego.dibujarMenu()"></i>
+                </div>
+            </div>
+        `;
+    }
+
+    iniciarJuegoCPU(dificultad) {
+        this.dificultadCPU = dificultad;
+        this.jugadores[1] = { nombre: 'CPU', simbolo: 'O' };
+        this.dibujarTablero();
+    }
+    
+    movimientoCPU() {
+        setTimeout(() => {
+            let movimiento;
+            switch (this.dificultadCPU) {
+                case 'facil':
+                    let opciones = this.tablero.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+                    movimiento = opciones[Math.floor(Math.random() * opciones.length)];
+                break;
+                case 'media':
+                    movimiento=this.movimientoCPUMedia();
+                break;
+                case 'dificil':
+                    movimiento=this.movimientoCPUDificil(this.tablero, 'O').index;
+                break
+                default:
+                    break;
+            }
+            this.tomarMovimiento(this.cells[movimiento], movimiento);
+        }, 500);
+    }
+    
+    movimientoCPUMedia(){
+        for (let simbolo of ['O', 'X']){
+            for (let combo of this.consicionesGanadoras) {
+                let [a, b, c] = combo;
+                let tableroCombo = [this.tablero[a], this.tablero[b], this.tablero[c]];
+                let vacios = tableroCombo.filter(val => val === '');
+    
+                if (vacios.length === 1 && tableroCombo.filter(val => val === simbolo).length === 2) {
+                    let indiceVacio = combo[tableroCombo.indexOf('')];
+                    return indiceVacio;
+                }
+            }
+        }
+        let opciones = this.tablero.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+        return opciones[Math.floor(Math.random() * opciones.length)];
+    }
+
+    movimientoCPUDificil(tablero, jugador) {
+        let resultado = this.evaluarTablero(tablero);
+        if (resultado !== 0) return { score: resultado };
+        if (!tablero.includes('')) return { score: 0 };
+    
+        let movimientos = [];
+        for (let i = 0; i < tablero.length; i++) {
+            if (tablero[i] === '') {
+                let movimiento = { index: i };
+                tablero[i] = jugador;
+    
+                if (jugador === 'O') {
+                    movimiento.score = this.movimientoCPUDificil(tablero, 'X').score;
+                } else {
+                    movimiento.score = this.movimientoCPUDificil(tablero, 'O').score;
+                }
+    
+                tablero[i] = '';
+                movimientos.push(movimiento);
+            }
+        }
+    
+        let mejorMovimiento;
+        if (jugador === 'O') {
+            let mejorScore = -Infinity;
+            movimientos.forEach(mov => {
+                if (mov.score > mejorScore) {
+                    mejorScore = mov.score;
+                    mejorMovimiento = mov;
+                }
+            });
+        } else {
+            let mejorScore = Infinity;
+            movimientos.forEach(mov => {
+                if (mov.score < mejorScore) {
+                    mejorScore = mov.score;
+                    mejorMovimiento = mov;
+                }
+            });
+        }
+        return mejorMovimiento;
+    }
+    
+    evaluarTablero(tablero) {
+        for (let combo of this.consicionesGanadoras) {
+            const [a, b, c] = combo;
+            if (tablero[a] !== '' && tablero[a] === tablero[b] && tablero[a] === tablero[c]) {
+                return (tablero[a] === 'O') ? 10 : -10;
+            }
+        }
+        return 0;
     }
 }
 
