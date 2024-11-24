@@ -3,9 +3,8 @@ class LaVieja {
         this.jugadorActual = 'X';
         this.tablero = ['', '', '', '', '', '', '', '', ''];
         this.juegoActivo = true;
-        this.cells = document.querySelectorAll('.cell');
-        this.menu=document.getElementById('contenedorMenu');
-        this.contenedorTablero=document.getElementById('contenedorTablero');
+        this.cells=[];
+        this.contenedor=document.getElementById('body');
         this.titulo=document.getElementById('titulo');
         this.instrucciones=`
             ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!
@@ -20,22 +19,20 @@ class LaVieja {
     }
 
     dibujarMenu(){
-            this.quitarJuego();
-
             this.titulo.classList.add('agrandar');
             setTimeout(() => {
-                this.titulo.classList.remove('col-4', 'agrandar');
-                this.titulo.classList.add('col-8');
+                this.titulo.classList.remove('col-10', 'agrandar');
+                this.titulo.classList.add('col-12');
             }, 500);
 
             this.btnMenu.classList.add('d-none');
 
-            this.menu.innerHTML=`
-            <div class="row d-flex flex-column align-items-center mt-5">
-                <div class="col-6" onclick="juego.iniciarJuego()">
+            this.contenedor.innerHTML=`
+            <div class="row d-flex flex-column align-items-center mt-5" id="contenedorMenu">
+                <div class="col-8 mt-5" onclick="juego.dibujarTablero()">
                     <img src="img/nuevoJuego.png" alt="Nuevo Juego" class="img-fluid">
                 </div>
-                <div class="col-6" onclick="juego.mostrarInstrucciones()">
+                <div class="col-8" onclick="juego.mostrarInstrucciones()">
                     <img src="img/Instrucciones.png" alt="Nuevo Juego" class="img-fluid">
                 </div>
             </div>
@@ -43,18 +40,17 @@ class LaVieja {
     }
 
     quitarMenu(){
-        this.menu.innerHTML="";
         this.titulo.classList.add('reducir');
         setTimeout(() => {
-            this.titulo.classList.remove('col-8', 'reducir');
-            this.titulo.classList.add('col-4');
+            this.titulo.classList.remove('col-12', 'reducir');
+            this.titulo.classList.add('col-10');
         }, 500);
     }
 
     mostrarInstrucciones(){
-        this.menu.innerHTML=`
-        <div class="row d-flex justify-content-center">
-            <div class="col-8 text-center">
+        this.contenedor.innerHTML=`
+        <div class="row d-flex justify-content-center" id="menuInstrucciones">
+            <div class="col text-center mt-5">
                 <h3>
                     ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!"
                 </h3>
@@ -64,10 +60,45 @@ class LaVieja {
         `
     }
 
+    dibujarTablero(){
+        console.log('a')
+        this.contenedor.innerHTML=`
+            <div class="" id="contenedorTablero">
+                <div class="row d-flex justify-content-center" id="linea1">
+                    <div class="col-3 border-5 cell" id="0" onclick="juego.tomarMovimiento(this, 0)"></div>
+                    <div class="col-3 border-5 cell" id="1" onclick="juego.tomarMovimiento(this, 1)"></div>
+                    <div class="col-3 border-5 cell" id="2" onclick="juego.tomarMovimiento(this, 2)"></div>
+                </div>
+                <div class="row d-flex justify-content-center" id="linea2">
+                    <div class="col-3 border-5 cell" id="3" onclick="juego.tomarMovimiento(this, 3)"></div>
+                    <div class="col-3 border-5 cell" id="4" onclick="juego.tomarMovimiento(this, 4)"></div>
+                    <div class="col-3 border-5 cell" id="5" onclick="juego.tomarMovimiento(this, 5)"></div>
+                </div>
+                <div class="row d-flex justify-content-center" id="linea3">
+                    <div class="col-3 border-5 cell" id="6" onclick="juego.tomarMovimiento(this, 6)"></div>
+                    <div class="col-3 border-5 cell" id="7" onclick="juego.tomarMovimiento(this, 7)"></div>
+                    <div class="col-3 border-5 cell" id="8" onclick="juego.tomarMovimiento(this, 8)"></div>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            this.cells= document.querySelectorAll('.cell')
+            this.iniciarJuego();
+        }, 500);
+    }
+    
+    dibujarBordes(cell) {
+        const elementoAnterior = cell.previousElementSibling;
+        const elementoSiguiente = cell.nextElementSibling;
+        const padre = cell.parentNode;
+
+        !elementoAnterior ? cell.style.borderRight = '2px solid #1919a6' : '';
+        !elementoSiguiente ? cell.style.borderLeft = '2px solid #1919a6' : '';
+        padre.id==='linea1' || padre.id==='linea2' ? cell.style.borderBottom = '2px solid #1919a6':'';
+    }
+
     iniciarJuego(){
         this.quitarMenu();
-        this.restaurarJuego();
-        this.contenedorTablero.classList.remove('d-none');
         this.btnMenu.classList.remove('d-none');
 
         this.jugadores.forEach((jugador,index)=>{
@@ -85,24 +116,10 @@ class LaVieja {
         });
     }
 
-    quitarJuego(){
-        this.contenedorTablero.classList.add('d-none');
-    }
-
-    dibujarBordes(cell) {
-        const elementoAnterior = cell.previousElementSibling;
-        const elementoSiguiente = cell.nextElementSibling;
-        const padre = cell.parentNode;
-
-        !elementoAnterior ? cell.style.borderRight = '2px solid #1919a6' : '';
-        !elementoSiguiente ? cell.style.borderLeft = '2px solid #1919a6' : '';
-        padre.id==='linea1' || padre.id==='linea2' ? cell.style.borderBottom = '2px solid #1919a6':'';
-    }
-
     tomarMovimiento(cell, index) {
         if (this.tablero[index] === '' && this.juegoActivo) {
             this.tablero[index] = this.jugadorActual;
-            this.jugadorActual==='X' ? cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid p-4">`: cell.innerHTML=`<img src="img/o.png" alt="X" class="img-fluid p-4">`;
+            this.jugadorActual==='X' ? cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid">`: cell.innerHTML=`<img src="img/o.png" alt="O" class="img-fluid">`;
             let ficha = cell.querySelector('img');
             //ficha.innerText = this.jugadorActual;
             ficha.classList.add('puff-in-center');

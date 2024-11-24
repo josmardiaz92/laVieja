@@ -5,6 +5,20 @@
     <author email="josmardiaz92@gmail.com" href="">
         Lowdevices.Dev's
     </author>
+    <platform name="android">
+        <icon src="www/img/logo-mdpi.png" density="mdpi" />
+        <icon src="www/img/logo-hdpi.png" density="hdpi" />
+        <icon src="www/img/logo-xhdpi.png" density="xhdpi" />
+        <icon src="www/img/logo-xxhdpi.png" density="xxhdpi" />
+        <icon src="www/img/logo-xxxhdpi.png" density="xxxhdpi" />
+        
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="www/img/logo.png"/>
+        <preference name="AndroidWindowSplashScreenBackground" value="#969191" />
+        <preference name="SplashScreenDelay" value="0" />
+
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+        <preference name="AndroidInsecureFileModeEnabled" value="false" />
+    </platform>
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
