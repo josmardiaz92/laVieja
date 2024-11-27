@@ -68,7 +68,7 @@ class LaVieja {
                 <h3>
                     ¡Bienvenido al clásico juego de la vieja! También conocido como tres en línea o tic-tac-toe, el objetivo es sencillo: ¡ser el primero en alinear tres fichas! Coloca tu ficha en un espacio vacío y ¡a ganar!"
                 </h3>
-                <i class="fa-solid fa-arrow-left fa-2xl mt-5" style="color: #ffff00;" onclick="juego.dibujarMenu()"></i>
+                <img src="img/atras.png" alt="Instrucciones" class="img-fluid w-25 mt-5" onclick="juego.dibujarMenu()">
             </div>               
         </div>
         `
@@ -224,7 +224,7 @@ class LaVieja {
                     <img src="img/dificil.png" alt="dificil" class="img-fluid">
                 </div>
                 <div class="col-8 mt-5 d-flex justify-content-center">
-                    <i class="fa-solid fa-arrow-left fa-2xl mt-5" style="color: #ffff00;" onclick="juego.dibujarMenu()"></i>
+                    <img src="img/atras.png" alt="Instrucciones" class="img-fluid w-25 mt-5" onclick="juego.dibujarMenu()">
                 </div>
             </div>
         `;
