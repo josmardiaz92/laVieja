@@ -8,61 +8,64 @@ char tablero[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
 char jugadorActual = 'X';
 bool ganador = false;
 bool empate = false;
+bool salir=false;
 string mensajeVolver="Presiona Enter para volver al menú principal.";
-int espacios = 15;
+int espacios = 93;
 
 void verificarEntrada(int opcion,int min, int max){
             if(cin.fail() || opcion<min || opcion>max){
-            cout << "Opción inválida, por favor elija una opcion entre "<<min<<" y "<<max<<"."<<endl;
-            cin.clear(); // Restablece el estado del `cin`
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpia el buffer de entrada
-            cout << "Presiona Enter para continuar...";
-            cin.get(); // Espera que el usuario presione Enter
+            cout<<endl;
+            cout <<setw(espacios-24)<< "" << "Opción inválida, por favor elija una opcion entre "<<min<<" y "<<max<<"."<<endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout<<setw(espacios-11)<< ""  << "Presiona Enter para continuar...";
+            cin.get();
         }
 }
 
-// Función para mostrar el tablero
 void mostrarTablero() {
     system("cls");
 
-    cout << setw(espacios) << "" << "-------------" << endl;
+    cout << setw(espacios-2) << "" << "-------------" << endl;
     for (int i = 0; i < 3; i++) {
-        cout <<setw(espacios)<< "" << "| ";
+        cout <<setw(espacios-2)<< "" << "| ";
         for (int j = 0; j < 3; j++) {
             cout << tablero[i][j] << " | ";
         }
         cout << endl;
-        cout <<setw(espacios)<< "" << "-------------" << endl;
+        cout <<setw(espacios-2)<< "" << "-------------" << endl;
     }
 }
 
-// Función para tomar la entrada del usuario
 void tomarEntradaJugador() {
     int posicion;
     do
     {
-        cout << "Jugador " << jugadorActual << ", ingresa una posicion (1-9): ";
+        cout<<endl;
+        cout <<setw(espacios-16)<< "" << "Jugador " << jugadorActual << ", ingresa una posicion (1-9): ";
         cin >> posicion;
-        verificarEntrada(posicion,1,9);
-    } while (posicion<1 || posicion>9);
+        verificarEntrada(posicion,1,10);
+    } while (posicion<1 || posicion>10);
+    
+    if(posicion==10){
+        salir=true;
+    }else{
+        
+        int fila = (posicion - 1) / 3;
+        int columna = (posicion - 1) % 3;
 
-
-    // Convertir la posición a coordenadas del tablero
-    int fila = (posicion - 1) / 3;
-    int columna = (posicion - 1) % 3;
-
-    // Verificar si la posición está vacía
-    if (tablero[fila][columna] >= '1' && tablero[fila][columna] <= '9') {
-        tablero[fila][columna] = jugadorActual;
-    } else {
-        cout << "Posición ya ocupada. Intenta de nuevo." << endl;
-        tomarEntradaJugador();
+    
+        if (tablero[fila][columna] >= '1' && tablero[fila][columna] <= '9') {
+            tablero[fila][columna] = jugadorActual;
+        } else {
+            cout<<setw(espacios-15)<< ""  << "Posición ya ocupada. Intenta de nuevo." << endl;
+            tomarEntradaJugador();
+        }
     }
 }
 
-// Función para verificar si hay un ganador
 bool verificarGanador() {
-    // Verificar filas, columnas y diagonales
+
     for (int i = 0; i < 3; i++) {
         if ((tablero[i][0] == tablero[i][1] && tablero[i][1] == tablero[i][2]) ||
             (tablero[0][i] == tablero[1][i] && tablero[1][i] == tablero[2][i])) {
@@ -78,12 +81,11 @@ bool verificarGanador() {
     return ganador;
 }
 
-// Función para verificar si hay un empate
 bool verificarEmpate() {
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             if (tablero[i][j] >= '1' && tablero[i][j] <= '9') {
-                return false; // Hay casillas vacías, no hay empate
+                return false;
             }
         }
     }
@@ -93,36 +95,38 @@ bool verificarEmpate() {
 
 void instrucciones(){
     system("cls");
-    cout<<setw(espacios*1.5)<< "" << "Instrucciones del juego"<<endl<<endl;
+    cout<<setw(espacios-6)<< "" << "Instrucciones del juego"<<endl<<endl;
 
-    cout<<setw(espacios/3)<< "" <<"1. Selecciona con que ficha quieres jugar (X o O)."<<endl;
-    cout<<setw(espacios/3)<< "" <<"2. Selecciona en tu teclado el nùmero de la casilla en donde quieres colocar tu ficha."<<endl;
-	cout<<setw(espacios/3)<< "" <<"3. Ve colocando tus fichas por turno intentado bloquear a tu oponente."<<endl;
-	cout<<setw(espacios/3)<< "" <<"4. Cuando logres colocar tres fichas en fila habras ganado la partida."<<endl<<endl;
-	cout<<setw(espacios/3)<< "" <<mensajeVolver<<endl;
+    cout<<setw(espacios-19)<< "" <<"1. Selecciona con que ficha quieres jugar (X o O)."<<endl;
+    cout<<setw(espacios-37)<< "" <<"2. Selecciona en tu teclado el nùmero de la casilla en donde quieres colocar tu ficha."<<endl;
+	cout<<setw(espacios-29)<< "" <<"3. Ve colocando tus fichas por turno intentado bloquear a tu oponente."<<endl;
+	cout<<setw(espacios-29)<< "" <<"4. Cuando logres colocar tres fichas en fila habras ganado la partida."<<endl;
+	cout<<setw(espacios-24)<< "" <<"5. Si deseas salir de una partida, introduce 10 para salir."<<endl<<endl;
+    
+	cout<<setw(espacios-17)<< "" <<mensajeVolver<<endl;
 
-    cin.ignore(); // Para limpiar el buffer de entrada
-    cin.get(); // Esperar a que el usuario presione Enter
+    cin.ignore();
+    cin.get();
 
 }
 
 void creditos(){
     system("cls");
-    cout <<setw(espacios*1.5)<< "" <<"Creditos:"<<endl<<endl;
+    cout <<setw(espacios)<< "" <<"Creditos:"<<endl<<endl;
 
-    cout<<setw(espacios*1.5-3)<< "" <<"Desarrollado por"<<endl<<endl;
-    cout<<setw(espacios)<< "" <<"- Caicedo Jhosneyder"<<endl;
-    cout<<setw(espacios)<< "" <<"- Diaz Josmar"<<endl;
-    cout<<setw(espacios)<< "" <<"- Monsalve Adrián"<<endl;
-    cout<<setw(espacios)<< "" <<"- Nuñez Rossana"<<endl;
-    cout<<setw(espacios)<< "" <<"- Serrano María"<<endl<<endl;
+    cout<<setw(espacios-3)<< "" <<"Desarrollado por"<<endl<<endl;
+    cout<<setw(espacios-4)<< "" <<"Caicedo Jhosneyder"<<endl;
+    cout<<setw(espacios-1)<< "" <<"Diaz Josmar"<<endl;
+    cout<<setw(espacios-3)<< "" <<"Monsalve Adrián"<<endl;
+    cout<<setw(espacios-2)<< "" <<"Nuñez Rossana"<<endl;
+    cout<<setw(espacios-2)<< "" <<"Serrano María"<<endl<<endl;
     
-    cout<<setw(espacios*1.5-5)<< "" <<"¡Gracias por jugar!"<<endl;
+    cout<<setw(espacios-5)<< "" <<"¡Gracias por jugar!"<<endl<<endl;
     
-    cout<<mensajeVolver<<endl;
+    cout<<setw(espacios-18)<< "" <<mensajeVolver<<endl;
 
-    cin.ignore(); // Para limpiar el buffer de entrada
-    cin.get(); // Esperar a que el usuario presione Enter
+    cin.ignore();
+    cin.get();
 
 }
 
@@ -131,7 +135,8 @@ void jugar(){
     do {
         ganador = false;
         empate = false;
-        // Reiniciar el tablero para una nueva partida
+        salir=false;
+    
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 tablero[i][j] = (char)('1' + i * 3 + j);
@@ -140,7 +145,7 @@ void jugar(){
 
         mostrarTablero();
 
-        while (!ganador && !empate) {
+        while (!ganador && !empate &&!salir) {
             tomarEntradaJugador();
             mostrarTablero();
             ganador = verificarGanador();
@@ -148,19 +153,22 @@ void jugar(){
                 empate = verificarEmpate();
             }
 
-            // Cambiar de jugador
+        
             jugadorActual = (jugadorActual == 'X') ? 'O' : 'X';
         }
 
         if (ganador) {
-            // Mostrar al ganador con el símbolo contrario
+        
             char ganadorSimbolo = (jugadorActual == 'X') ? 'O' : 'X';
-            cout << "¡Jugador " << ganadorSimbolo << " ha ganado!" << endl;
+            cout<<setw(espacios-6)<< ""  << "¡Jugador " << ganadorSimbolo << " ha ganado!" << endl;
         } else if (empate) {
-            cout << "¡Empate!" << endl;
+            cout <<setw(espacios)<< "" << "¡Empate!" << endl;
+            cout <<setw(espacios-11)<< "" << "Presiona Enter para continuar...";
+            cin.ignore();
+            cin.get();
         }
 
-        cout << "¿Quieres jugar otra partida? (s/n): ";
+        cout <<setw(espacios-14)<< "" << "¿Quieres jugar otra partida? (s/n): ";
         cin >> jugarDeNuevo;
     } while (jugarDeNuevo == 's' || jugarDeNuevo == 'S');    
 }
@@ -171,12 +179,11 @@ void pantallaPrincipal(){
     do
     {
         system("cls");
-        cout << setw(espacios*1.5)<< "" <<"La Vieja"<<endl<<endl;
-        cout<<setw(espacios)<< "" <<"1. Iniciar Juego"<<endl;
-        cout<<setw(espacios)<< "" <<"2. Instrucciones"<<endl;
-        cout<<setw(espacios)<< "" <<"3. Creditos"<<endl;
-        cout<<setw(espacios)<< "" <<"4. Salir"<<endl<<endl<<endl;
-        cout<<"Seleccione una opción: ";
+        cout << setw(espacios)<< "" <<"La Vieja"<<endl<<endl;
+        cout<<setw(espacios-4)<< "" <<"1. Iniciar Juego"<<endl;
+        cout<<setw(espacios-4)<< "" <<"2. Instrucciones"<<endl;
+        cout<<setw(espacios-2)<< "" <<"3. Creditos"<<endl<<endl;
+        cout<<setw(espacios-7)<< "" <<"Seleccione una opción: ";
         cin>>opcion;
         
         switch (opcion)
@@ -191,7 +198,10 @@ void pantallaPrincipal(){
                 creditos();
                 break;
             case 4:
-                cout << "Saliendo del juego. ¡Hasta luego!" << endl;
+                cout<<endl;
+                cout<<setw(espacios-12)<< ""  << "Saliendo del juego. ¡Hasta luego!" << endl;
+                cin.ignore();
+                cin.get();
                 return;
                 break;
             default:
