@@ -154,12 +154,21 @@ void jugar(){
             }
 
         
-            jugadorActual = (jugadorActual == 'X') ? 'O' : 'X';
+            if(jugadorActual=='X'){
+                jugadorActual='O';
+            }else{
+                jugadorActual='X';
+            }
         }
 
         if (ganador) {
+            char ganadorSimbolo;
         
-            char ganadorSimbolo = (jugadorActual == 'X') ? 'O' : 'X';
+            if(jugadorActual=='X'){
+                ganadorSimbolo='O';
+            }else{
+                ganadorSimbolo='X';
+            }
             cout<<setw(espacios-6)<< ""  << "¡Jugador " << ganadorSimbolo << " ha ganado!" << endl;
         } else if (empate) {
             cout <<setw(espacios)<< "" << "¡Empate!" << endl;
