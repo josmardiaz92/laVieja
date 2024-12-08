@@ -33,16 +33,25 @@
             </div>
         </div>
         <div class="contenedorModales">
-            <div class="modal fade transparente" id="mostrarGanador" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mostrarGanadorLabel" aria-hidden="true">
+            <div class="modal fade transparente " id="anuncios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="anunciosLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content transparente">
                         <div class="modal-body d-flex flex-column align-items-center">
                             
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                        <button type="button" class="btn btn-secondary" onclick="juego.dibujarMenu()" data-bs-dismiss="modal">Salir</button>
-                        <button type="button" class="btn btn-primary" onclick="juego.restaurarJuego()" data-bs-dismiss="modal">Volver a Jugar</button>
+                            <button type="button" class="btn btn-secondary" onclick="juego.dibujarMenu()" data-bs-dismiss="modal" id="salir">Salir</button>
+                            <button type="button" class="btn btn-primary" onclick="juego.restaurarJuego()" data-bs-dismiss="modal" id="deNuevo">Volver a Jugar</button>
+                            <button type="button" class="btn btn-danger d-none" onclick="juego.iniciarJuegoCPU('dificil')" data-bs-dismiss="modal" id="iniciar">Iniciar</button>
+
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade transparente " id="nombres" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="anunciosLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content transparente">
+                        
                     </div>
                 </div>
             </div>

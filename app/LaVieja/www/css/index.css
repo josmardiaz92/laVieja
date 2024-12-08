@@ -39,6 +39,99 @@ body, .container-fluid{
     color: #FFFF00;
 }
 
+.advertencia{
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(255, 0, 0, 0.153);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.125);
+    color: #FFFF00;
+    -webkit-animation: heartbeat 1.5s ease-in-out 2s infinite both;
+            animation: heartbeat 1.5s ease-in-out 2s infinite both;
+}
+
+.nombreJugador{
+    background: #00000000;
+    color: aliceblue;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.nombreJugador::placeholder{
+    color: aliceblue;
+}
+
+/* ------------------ APARICION DE ADVERTENCIA ------------------ */
+
+@-webkit-keyframes heartbeat {
+    from {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: center center;
+            transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+    10% {
+    -webkit-transform: scale(0.91);
+            transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    }
+    17% {
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+    33% {
+    -webkit-transform: scale(0.87);
+            transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    }
+    45% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+}
+@keyframes heartbeat {
+    from {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: center center;
+            transform-origin: center center;
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+    10% {
+    -webkit-transform: scale(0.91);
+            transform: scale(0.91);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    }
+    17% {
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+    33% {
+    -webkit-transform: scale(0.87);
+            transform: scale(0.87);
+    -webkit-animation-timing-function: ease-in;
+            animation-timing-function: ease-in;
+    }
+    45% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-animation-timing-function: ease-out;
+            animation-timing-function: ease-out;
+    }
+}
+
 /* ------------------ FOOTER ------------------ */
 #footer span{
     font-size: x-small;

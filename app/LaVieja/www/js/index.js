@@ -11,8 +11,8 @@ class LaVieja {
         `;
         this.btnMenu=document.getElementById('btnMenu');
         this.jugadores=[];
-        this.dificultadCPU='dificil';
-        this.consicionesGanadoras = [
+        this.dificultadCPU='';
+        this.condicionesGanadoras = [
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8],
@@ -23,6 +23,10 @@ class LaVieja {
             [2, 4, 6]
         ];
         this.dibujarMenu();
+        this.jugadas=[
+            {jugador:'X',movimientos:[]},
+            {jugador:'O',movimientos:[]}
+        ]
     }
 
     dibujarMenu(){
@@ -31,26 +35,26 @@ class LaVieja {
             {nombre:'Jugador 2',simbolo:'O'},
         ];
         this.titulo.classList.add('agrandar');
-            setTimeout(() => {
-                this.titulo.classList.remove('col-10', 'agrandar');
-                this.titulo.classList.add('col-12');
-            }, 500);
+        setTimeout(() => {
+            this.titulo.classList.remove('col-10', 'agrandar');
+            this.titulo.classList.add('col-12');
+        }, 500);
 
-            this.btnMenu.classList.add('d-none');
+        this.btnMenu.classList.add('d-none');
 
-            this.contenedor.innerHTML=`
-            <div class="row d-flex flex-column align-items-center mt-5" id="contenedorMenu">
-                <div class="col-5 mt-5" onclick="juego.dibujarTablero()">
-                    <img src="img/1-vs-1.png" alt="1-vs-1" class="img-fluid">
-                </div>
-                <div class="col-6" onclick="juego.mostrarDificultades()">
-                    <img src="img/1-vs-CPU.png" alt="1-vs-CPU" class="img-fluid">
-                </div>
-                <div class="col-9 mt-5" onclick="juego.mostrarInstrucciones()">
-                    <img src="img/Instrucciones.png" alt="Instrucciones" class="img-fluid">
-                </div>
+        this.contenedor.innerHTML=`
+        <div class="row d-flex flex-column align-items-center mt-5" id="contenedorMenu">
+            <div class="col-5 mt-5" onclick="juego.dibujarTablero()">
+                <img src="img/1-vs-1.png" alt="1-vs-1" class="img-fluid">
             </div>
-            `
+            <div class="col-6" onclick="juego.mostrarDificultades()">
+                <img src="img/1-vs-CPU.png" alt="1-vs-CPU" class="img-fluid">
+            </div>
+            <div class="col-9 mt-5" onclick="juego.mostrarInstrucciones()">
+                <img src="img/Instrucciones.png" alt="Instrucciones" class="img-fluid">
+            </div>
+        </div>
+        `;
     }
 
     quitarMenu(){
@@ -115,14 +119,16 @@ class LaVieja {
         this.restaurarJuego();
         this.btnMenu.classList.remove('d-none');
 
-        this.jugadores.forEach((jugador,index)=>{
+        this.pedirNombre()
+
+        /* this.jugadores.forEach((jugador,index)=>{
             if(jugador.nombre!=='CPU'){
                 jugador.nombre=prompt(`Introdusca el nombre del jugador ${index+1}`);
             }
             if(jugador.nombre===''){
                 jugador.nombre=`Jugador ${index+1}`;
             }
-        })
+        }) */
 
         this.cells.forEach((cell) => {
             const ancho = cell.offsetWidth;
@@ -135,21 +141,33 @@ class LaVieja {
     tomarMovimiento(cell, index) {
         if (this.tablero[index] === '' && this.juegoActivo) {
             this.tablero[index] = this.jugadorActual;
-            this.jugadorActual==='X' ? cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid">`: cell.innerHTML=`<img src="img/o.png" alt="O" class="img-fluid">`;
+            if(this.jugadorActual==='X'){
+                cell.innerHTML=`<img src="img/x.png" alt="X" class="img-fluid">`;
+                this.jugadas[0].movimientos.push(index);
+            }else{
+                cell.innerHTML=`<img src="img/o.png" alt="O" class="img-fluid">`;
+                this.jugadas[1].movimientos.push(index);
+            }
+
             let ficha = cell.querySelector('img');
-            //ficha.innerText = this.jugadorActual;
             ficha.classList.add('puff-in-center');
+
             this.verificarGanador();
             this.jugadorActual = this.jugadorActual === 'X' ? 'O' : 'X';
+
+            if(this.jugadores[1].nombre==='CPU' && this.dificultadCPU==='dificil'){
+                this.eliminarJugada()
+            }
 
             if(this.jugadorActual==='O' && this.jugadores[1].nombre==='CPU'){
                 this.movimientoCPU();
             }
+
         }
     }
 
     verificarGanador() {
-        for (let condicion of this.consicionesGanadoras) {
+        for (let condicion of this.condicionesGanadoras) {
             const [a, b, c] = condicion;
             if (this.tablero[a] && this.tablero[a] === this.tablero[b] && this.tablero[a] === this.tablero[c]) {
                 this.cells.forEach(celda=>{
@@ -158,19 +176,20 @@ class LaVieja {
                     }else{
                     }
                 })
-                this.mostrarGanador(this.tablero[a]);
+                this.mostrarAdvertencia(this.tablero[a]);
                 this.juegoActivo = false;
                 return;
             }
         }
 
         if (!this.tablero.includes('')) {
-            this.mostrarGanador("empate");
+            this.mostrarAdvertencia("empate");
             this.juegoActivo = false;
         }
     }
 
     restaurarJuego() {
+        this.jugadas.forEach(jugada=>{jugada.movimientos=[]})
         this.tablero = ['', '', '', '', '', '', '', '', ''];
         this.jugadorActual = 'X';
         this.juegoActivo = true;
@@ -180,34 +199,50 @@ class LaVieja {
         });
     }
 
-    mostrarGanador(ganador){
-        const modal=document.getElementById('mostrarGanador');
+    mostrarAdvertencia(anuncio){
+        const modal=document.getElementById('anuncios');
         const instModal=new bootstrap.Modal(modal);
         const resultado=modal.querySelector('.modal-body');
-        if(ganador==="empate"){
-            resultado.innerHTML=`
-                <div class="col">
-                    <img src="img/empate.png" alt="GANADOR" class="img-fluid">
-                </div>
-                <div class="col">
-                    <h3>¿ Revancha ?</h3>
-                </div>
-            `;
-        }else{
-            ganador==='X' ? ganador=this.jugadores[0].nombre : ganador=this.jugadores[1].nombre;
-            resultado.innerHTML=`
-                <div class="col">
-                    <img src="img/ganador.png" alt="GANADOR" class="img-fluid">
-                </div>
-                <div class="col">
-                    <h3>${ganador}</h3>
-                </div>
-            `;
+
+        switch (anuncio) {
+            case "empate":
+                resultado.innerHTML=`
+                    <div class="col">
+                        <img src="img/empate.png" alt="GANADOR" class="img-fluid">
+                    </div>
+                    <div class="col">
+                        <h3>¿ Revancha ?</h3>
+                    </div>
+                `;
+            break;
+            case "advertencia":
+                this.verAdvertencia();
+                resultado.innerHTML=`
+                    <div class="col">
+                        <img src="img/advertencia.png" alt="ADVERTENCIA" class="img-fluid">
+                    </div>
+                    <div class="col">
+                        <h3 class="text-center">¿Preparado para esto?</h3>
+                        <p>solo puedes tener 3 fichas activas en juego<p>
+                    </div>
+                `;
+            break
+            default:
+                anuncio==='X' ? anuncio=this.jugadores[0].nombre : anuncio=this.jugadores[1].nombre;
+                resultado.innerHTML=`
+                    <div class="col">
+                        <img src="img/ganador.png" alt="GANADOR" class="img-fluid">
+                    </div>
+                    <div class="col">
+                        <h3>${anuncio}</h3>
+                    </div>
+                `;
+            break;
         }
 
         setTimeout(() => {
             instModal.show();
-        }, 1000);
+        }, 500);
     }
 
     mostrarDificultades(){
@@ -220,7 +255,7 @@ class LaVieja {
                 <div class="col-7 mt-3" onclick="juego.iniciarJuegoCPU('media')">
                     <img src="img/medio.png" alt="medio" class="img-fluid">
                 </div>
-                <div class="ms-3 col-9 mt-3" onclick="juego.iniciarJuegoCPU('dificil')">
+                <div class="ms-3 col-9 mt-3" onclick="juego.mostrarAdvertencia('advertencia')">
                     <img src="img/dificil.png" alt="dificil" class="img-fluid">
                 </div>
                 <div class="col-8 mt-5 d-flex justify-content-center">
@@ -231,6 +266,9 @@ class LaVieja {
     }
 
     iniciarJuegoCPU(dificultad) {
+        setTimeout(() => {
+            this.verAdvertencia();
+        }, 500);
         this.dificultadCPU = dificultad;
         this.jugadores[1] = { nombre: 'CPU', simbolo: 'O' };
         this.dibujarTablero();
@@ -248,18 +286,18 @@ class LaVieja {
                     movimiento=this.movimientoCPUMedia();
                 break;
                 case 'dificil':
-                    movimiento=this.movimientoCPUDificil(this.tablero, 'O').index;
+                    movimiento=this.movimientoCPUMedia();
                 break
                 default:
                     break;
             }
             this.tomarMovimiento(this.cells[movimiento], movimiento);
-        }, 500);
+        }, 300);
     }
     
     movimientoCPUMedia(){
         for (let simbolo of ['O', 'X']){
-            for (let combo of this.consicionesGanadoras) {
+            for (let combo of this.condicionesGanadoras) {
                 let [a, b, c] = combo;
                 let tableroCombo = [this.tablero[a], this.tablero[b], this.tablero[c]];
                 let vacios = tableroCombo.filter(val => val === '');
@@ -273,52 +311,9 @@ class LaVieja {
         let opciones = this.tablero.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
         return opciones[Math.floor(Math.random() * opciones.length)];
     }
-
-    movimientoCPUDificil(tablero, jugador) {
-        let resultado = this.evaluarTablero(tablero);
-        if (resultado !== 0) return { score: resultado };
-        if (!tablero.includes('')) return { score: 0 };
-    
-        let movimientos = [];
-        for (let i = 0; i < tablero.length; i++) {
-            if (tablero[i] === '') {
-                let movimiento = { index: i };
-                tablero[i] = jugador;
-    
-                if (jugador === 'O') {
-                    movimiento.score = this.movimientoCPUDificil(tablero, 'X').score;
-                } else {
-                    movimiento.score = this.movimientoCPUDificil(tablero, 'O').score;
-                }
-    
-                tablero[i] = '';
-                movimientos.push(movimiento);
-            }
-        }
-    
-        let mejorMovimiento;
-        if (jugador === 'O') {
-            let mejorScore = -Infinity;
-            movimientos.forEach(mov => {
-                if (mov.score > mejorScore) {
-                    mejorScore = mov.score;
-                    mejorMovimiento = mov;
-                }
-            });
-        } else {
-            let mejorScore = Infinity;
-            movimientos.forEach(mov => {
-                if (mov.score < mejorScore) {
-                    mejorScore = mov.score;
-                    mejorMovimiento = mov;
-                }
-            });
-        }
-        return mejorMovimiento;
-    }
     
     evaluarTablero(tablero) {
-        for (let combo of this.consicionesGanadoras) {
+        for (let combo of this.condicionesGanadoras) {
             const [a, b, c] = combo;
             if (tablero[a] !== '' && tablero[a] === tablero[b] && tablero[a] === tablero[c]) {
                 return (tablero[a] === 'O') ? 10 : -10;
@@ -326,6 +321,58 @@ class LaVieja {
         }
         return 0;
     }
+
+    eliminarJugada(){
+        if(this.juegoActivo){
+            this.jugadas.forEach(jugada=>{
+                if(jugada.movimientos.length>=4){
+                    const jugadaEliminar=jugada.movimientos.shift();
+                    this.tablero[jugadaEliminar]='';
+                    document.getElementById(`${jugadaEliminar}`).innerHTML='';
+                }
+            })
+        }
+    }
+
+    verAdvertencia(){
+        const modal=document.getElementById('anuncios');
+        modal.classList.contains('advertencia') ? modal.classList.remove('advertencia') : modal.classList.add('advertencia');
+        const botones=modal.querySelectorAll('button');
+        botones.forEach(boton=>{
+            boton.classList.contains('d-none') ? boton.classList.remove('d-none') : boton.classList.add('d-none');
+        })
+    }
+    pedirNombre(){
+        const modalNombres=document.getElementById('nombres');
+        const instModalNombres=new bootstrap.Modal(modalNombres);
+        modalNombres.querySelector('.modal-content').innerHTML=`
+            <div class="modal-body d-flex flex-column align-items-center">
+                <div class="col">
+                    <img src="img/pedirNombre.png" alt="ADVERTENCIA" class="img-fluid">
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control nombreJugador" id="nombreJugador1" placeholder="Nombre del jugador 1">
+                    ${this.jugadores[1].nombre==='CPU' ? '' : `<input type="text" class="form-control nombreJugador" id="nombreJugador2" placeholder="Nombre del jugador 2">`}
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="guardarNombre">Guardar</button>
+            </div>
+        `;
+        instModalNombres.show();
+        document.getElementById('guardarNombre').onclick=()=>{
+            this.jugadores.forEach((jugador,index)=>{
+                if(jugador.nombre!=='CPU'){
+                    const nombre=document.getElementById(`nombreJugador${index+1}`).value.trim();
+                    if(nombre.length>0){
+                        jugador.nombre=nombre;
+                    }
+                }
+            })
+        }
+
+    }
+
 }
 
 const juego = new LaVieja();
