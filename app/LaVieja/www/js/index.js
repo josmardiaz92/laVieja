@@ -267,7 +267,9 @@ class LaVieja {
 
     iniciarJuegoCPU(dificultad) {
         setTimeout(() => {
-            this.verAdvertencia();
+            if(dificultad==='dificil'){
+                this.verAdvertencia();
+            }
         }, 500);
         this.dificultadCPU = dificultad;
         this.jugadores[1] = { nombre: 'CPU', simbolo: 'O' };
